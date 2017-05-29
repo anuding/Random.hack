@@ -23,6 +23,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using Windows.Storage.Streams;
 //using System.Data.SQLite;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
@@ -86,7 +87,7 @@ namespace Emotion
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 response = await client.PostAsync(uri, content);
                 var r1 = await response.Content.ReadAsStringAsync();
-               
+                
                 
                 return await response.Content.ReadAsStringAsync();
             }
@@ -95,65 +96,26 @@ namespace Emotion
         private async void AnalyzeButton_Click(object sender, RoutedEventArgs e)
         {
             string wangzhi = Input.Text;
-            //ResultsTextBlock.Text = await MakeAnalysisRequest("d:\\1.jpg") + "\n\n ";
+
+            //var file = await openPicker.PickSingleFileAsync();
+
+            //if (file != null)
+            {
+                //await
+              //  var stream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
+
+                var image = new BitmapImage();
+               // imgBitmap = new BitmapImage();
+                var uri = new System.Uri(wangzhi);
+                image.UriSource = uri;
+               // img.Source = imgBitmap;
+                //image.SetSource(stream);
+                ImageToAnalyze.Source = image;
+            }
+            
             ResultsTextBlock.Text = await MakeAnalysisRequest(wangzhi) + "\n\n ";
-            //ImageToAnalyze.Source =
-            /* var openPicker = new FileOpenPicker
-             {
-                 ViewMode = PickerViewMode.Thumbnail,
-                 SuggestedStartLocation = PickerLocationId.PicturesLibrary
-             };
-             openPicker.FileTypeFilter.Add(".jpg");
-             openPicker.FileTypeFilter.Add(".jpeg");
-             openPicker.FileTypeFilter.Add(".png");
-             openPicker.FileTypeFilter.Add(".gif");
-             openPicker.FileTypeFilter.Add(".bmp");
-             var file = await openPicker.PickSingleFileAsync();
-
-             if (file != null)
-             {
-                 //await
-                     ShowPreviewAndAnalyzeImage(file);
-
-             }*/
+            
         }
 
-        /*private async Task ShowPreviewAndAnalyzeImage(string r1)
-        {
-            //var stream1 = await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
-
-            //var image = new BitmapImage();
-            
-            //image.SetSource(stream1);
-
-        
-            //ImageToAnalyze.Source = image;
-
-            //analyze image
-            //var results = await AnalyzeImage(file);
-
-           
-            //parse result
-            //ResultsTextBlock.Text = ParseResult(results) + "\n\n " + ParseOCRResults(ocrResults);
-            ResultsTextBlock.Text = "efewfewfew"  + "\n\n ";// + ocrResults;
-        }*/
-
-       /* private async Task<AnalysisResult> AnalyzeImage(StorageFile file)
-        {
-
-            VisionServiceClient visionServiceClient = new VisionServiceClient(_subscriptionKey);
-
-            Stream imageFileStream = await file.OpenStreamForReadAsync();
-            
-                // Analyze the image for all visual features
-                VisualFeature[] visualFeatures = new VisualFeature[] { VisualFeature.Adult, VisualFeature.Categories
-            , VisualFeature.Color, VisualFeature.Description, VisualFeature.Faces, VisualFeature.ImageType
-            , VisualFeature.Tags };
-                AnalysisResult analysisResult = await visionServiceClient.AnalyzeImageAsync(imageFileStream, visualFeatures);
-                return analysisResult;
-            
-        }*/
-
-       
     }
 }
