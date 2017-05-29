@@ -23,6 +23,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+//using System.Data.SQLite;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -34,15 +35,21 @@ namespace Emotion
     public sealed partial class MainPage : Page
     {
         //readonly string _subscriptionKey;
+        /*void connectToDatabase()
+        {
+            m_dbConnection = new SQLiteConnection("D:\\Random.hack\\Random.hack\\Emotion\\Emotion\\Assets");
+            m_dbConnection.Open();
+        }*/
 
         public MainPage()
         {
+
             //set your key here
            // Console.Write("Enter image file path: ");
             string imageFilePath = ("d:\\1.jpg");//= Console.ReadLine();
-            //string wangzhi = Input.Text;
+            //
 
-            MakeAnalysisRequest(imageFilePath);
+            //MakeAnalysisRequest(imageFilePath);
             //MakeAnalysisRequest(wangzhi);
             // Console.WriteLine("\n\n\nHit ENTER to exit...");
             //Console.ReadLine();
@@ -72,15 +79,14 @@ namespace Emotion
             string uri = "https://westcentralus.api.cognitive.microsoft.com/vision/v1.0/analyze?" + requestParameters;
             HttpResponseMessage response;
             
-            byte[] byteData = Encoding.UTF8.GetBytes("{\"url\":\"" + "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1496059051033&di=257f16ede20b0dfc9256f418c7a8fb88&imgtype=0&src=http%3A%2F%2Fpic15.photophoto.cn%2F20100615%2F0006019058815826_b.jpg" + "\"}");
-            //byte[] byteData = Encoding.UTF8.GetBytes("{\"url\":\"" + wangzhi + "\"}");
+            
+            byte[] byteData = Encoding.UTF8.GetBytes("{\"url\":\"" + wangzhi + "\"}");
             using (var content = new ByteArrayContent(byteData))
             {
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 response = await client.PostAsync(uri, content);
                 var r1 = await response.Content.ReadAsStringAsync();
-                // ResultsTextBlock.Text = "efewfewfew" +  "\n\n ";//r1 +
-                //Console.WriteLine(await response.Content.ReadAsStringAsync());
+               
                 
                 return await response.Content.ReadAsStringAsync();
             }
@@ -88,7 +94,9 @@ namespace Emotion
 
         private async void AnalyzeButton_Click(object sender, RoutedEventArgs e)
         {
-            ResultsTextBlock.Text = await MakeAnalysisRequest("d:\\1.jpg") + "\n\n ";
+            string wangzhi = Input.Text;
+            //ResultsTextBlock.Text = await MakeAnalysisRequest("d:\\1.jpg") + "\n\n ";
+            ResultsTextBlock.Text = await MakeAnalysisRequest(wangzhi) + "\n\n ";
             //ImageToAnalyze.Source =
             /* var openPicker = new FileOpenPicker
              {
