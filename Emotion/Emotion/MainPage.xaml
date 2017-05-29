@@ -16,10 +16,14 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="Black" BorderThickness="2">
+        <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,0,40">
             <Image x:Name="ImageToAnalyze" />
         </Border>
+       
         <Button x:Name="AnalyzeButton" Content="Analyze" Grid.Row="1" Click="AnalyzeButton_Click"/>
+
         <TextBlock x:Name="ResultsTextBlock" TextWrapping="Wrap" Grid.Column="1" Margin="30,5"/>
+        <TextBox x:Name="Input" HorizontalAlignment="Left" Height="32" Margin="107,38,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="211"/>
+
     </Grid>
 </Page>
