@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" AutomationProperties.HelpText="">
         <Grid.RowDefinitions>
             <RowDefinition Height="9*"/>
             <RowDefinition Height="*"/>
@@ -16,14 +16,20 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        
+        
+        <Grid x:Name="PicGrid">
         <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,0,40">
             <Image x:Name="ImageToAnalyze" />
         </Border>
-       
-        <Button x:Name="AnalyzeButton" Content="Analyze" Grid.Row="1" Click="AnalyzeButton_Click"/>
+            <TextBlock x:Name="Poems" Text="" Margin="200 200 20 0" TextWrapping="Wrap" />
+        </Grid>
 
-        <TextBlock x:Name="ResultsTextBlock" TextWrapping="Wrap" Grid.Column="1" Margin="30,5"/>
-        <TextBox x:Name="Input" HorizontalAlignment="Left" Height="32" Margin="107,38,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="211"/>
+        
+        <Button x:Name="AnalyzeButton" Content="Analyze" Click="AnalyzeButton_Click" HorizontalAlignment="Right" Margin="0,17,23,0" VerticalAlignment="Top" Grid.Row="1"/>
+
+        <TextBlock x:Name="ResultsTextBlock" TextWrapping="Wrap" Grid.Column="1" Margin="30,5,30,0" Height="456" VerticalAlignment="Top"/>
+        <TextBox x:Name="Input" Height="32" Margin="29,17,153,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" d:LayoutOverrides="VerticalAlignment, LeftPosition, RightPosition" AutomationProperties.AutomationId="" AutomationProperties.HelpText="" Grid.Row="1"/>
 
     </Grid>
 </Page>

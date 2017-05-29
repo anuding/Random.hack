@@ -24,6 +24,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using Windows.Storage.Streams;
+using Windows.UI.Popups;
+using Windows.Graphics.Display;
 //using System.Data.SQLite;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
@@ -46,11 +48,11 @@ namespace Emotion
         {
 
           //这是干嘛的我忘了(⊙——⊙)
+
             string imageFilePath = ("d:\\1.jpg");
             this.InitializeComponent();
         }
-
-        //转流
+                //转流
         static byte[] GetImageAsByteArray(string imageFilePath)
         {
             FileStream fileStream = new FileStream(imageFilePath, FileMode.Open, FileAccess.Read);
@@ -95,7 +97,32 @@ namespace Emotion
             
             //显示分析结果
             ResultsTextBlock.Text = await MakeAnalysisRequest(wangzhi) + "\n\n ";
-            
+            //在这里更改要加在图片上的诗句
+            Poems.Text = "TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST";
+            //////////////////////////////////
+            //以下是抄来的截图保存代码
+            string desiredName = DateTime.Now.Ticks + ".jpg";
+            StorageFolder applicationFolder = ApplicationData.Current.LocalFolder;
+            StorageFolder folder = await applicationFolder.CreateFolderAsync("Pic", CreationCollisionOption.OpenIfExists);
+            StorageFile saveFile = await folder.CreateFileAsync(desiredName, CreationCollisionOption.OpenIfExists);
+            RenderTargetBitmap bitmap = new RenderTargetBitmap();
+            await bitmap.RenderAsync(PicGrid);
+            var pixelBuffer = await bitmap.GetPixelsAsync();
+            using (var fileStream = await saveFile.OpenAsync(FileAccessMode.ReadWrite))
+            {
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                encoder.SetPixelData(BitmapPixelFormat.Bgra8,
+                    BitmapAlphaMode.Ignore,
+                     (uint)bitmap.PixelWidth,
+                     (uint)bitmap.PixelHeight,
+                     DisplayInformation.GetForCurrentView().LogicalDpi,
+                     DisplayInformation.GetForCurrentView().LogicalDpi,
+                     pixelBuffer.ToArray());
+                await encoder.FlushAsync();
+            }
+            await new MessageDialog("已保存成功至C:\\Users\anuding\\AppData\\Local\\Packages\\2a0f1772-af4f-4ee4-a3e0-a9d62c687795_654wjja6gg34r\\LocalState\\Pic").ShowAsync();
+            ////////////////////////////
+
         }
 
     }
