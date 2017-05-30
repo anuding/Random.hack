@@ -26,6 +26,7 @@ using System.Text;
 using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.Graphics.Display;
+using System.Net;
 //using System.Data.SQLite;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
@@ -81,9 +82,45 @@ namespace Emotion
             {
                 content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
                 response = await client.PostAsync(uri, content);
+             
                 return await response.Content.ReadAsStringAsync();
             }
         }
+
+
+        //召唤文字分析
+        static async Task<string> TextAnalysisRequest(string wenzi)
+        {
+            ////////////////////////
+            //读取分析文字
+            var client1 = new HttpClient();
+            //var queryString = HttpUtility.ParseQueryString(string.Empty);
+            //var queryString = WebUtility.UrlEncode("{content:天门中断楚江开，碧水东流至此回。两岸青山相对出，孤帆一片日边来, tag:[mountains,iver]}");//i have a pen, you have an apple
+            //string poe = response.Content.ReadAsStringAsync();
+            var queryString = WebUtility.UrlEncode(string.Empty);
+            // Request headers
+            client1.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "608d39205c154d02a1599e77b637f21b");
+
+            var uri1 = "https://westus.api.cognitive.microsoft.com/text/analytics/v2.0/keyPhrases?" + queryString;
+
+            HttpResponseMessage response1;
+
+            // Request body
+            /* byte[] byteData1 = Encoding.UTF8.GetBytes("{\"documents\":[" +
+         "{\"id\":\"1\",\"text\":\"" + "i have a pen, you have an apple" + "\"},]}"););// */
+            byte[] byteData1 = Encoding.UTF8.GetBytes("{\"documents\":[" +
+        "{\"id\":\"1\",\"text\":\"" + wenzi + "\"},]}");
+
+            using (var content1 = new ByteArrayContent(byteData1))
+            {
+                content1.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                response1 = await client1.PostAsync(uri1, content1);
+                return await response1.Content.ReadAsStringAsync();
+            }
+            ////////////////////////////*/
+        }
+
+
 
         private async void AnalyzeButton_Click(object sender, RoutedEventArgs e)
         {
@@ -94,11 +131,41 @@ namespace Emotion
             var uri = new System.Uri(wangzhi);
             image.UriSource = uri;
             ImageToAnalyze.Source = image;
-            
+
             //显示分析结果
-            ResultsTextBlock.Text = await MakeAnalysisRequest(wangzhi) + "\n\n ";
+            string pic_fea = await MakeAnalysisRequest(wangzhi);
+                //await TextAnalysisRequest("i have a pen, you have an apple") + "\n\n ";
+            string poem_key = TextAnalysisRequest("i have a pen, you have an apple") + "\n\n ";
+            ResultsTextBlock.Text = pic_fea + poem_key;
+
+
+
+
+
             //在这里更改要加在图片上的诗句
-            Poems.Text = "TESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTESTTEST";
+            //if(pic_fea)
+            /*for(int i = 0; i < pic_fea.Length; i++)
+            {
+                if(pic_fea[i]=="s")
+            }*/
+            //string a = "china";
+            string snow = "snow";
+            if (pic_fea.IndexOf(snow) > -1)
+            {
+                Poems.Text = "白雪却嫌春色晚，故穿庭树作飞花"; //包含指定的字符串，执行相应的代码
+            }
+
+            string moon = "moon";
+            if (pic_fea.IndexOf(moon) > -1)
+            {
+                Poems.Text = "青女素娥俱耐冷，月中霜里斗婵娟"; //包含指定的字符串，执行相应的代码
+            }//会当凌绝顶，一览众山小
+            string mountain = "mountain";
+            if (pic_fea.IndexOf(mountain) > -1)
+            {
+                Poems.Text = "会当凌绝顶，一览众山小"; //包含指定的字符串，执行相应的代码
+            }
+            //Poems.Text = "两岸青山相对出，孤帆一片日边来";
             //////////////////////////////////
             //以下是抄来的截图保存代码
             string desiredName = DateTime.Now.Ticks + ".jpg";
