@@ -152,7 +152,7 @@ namespace Emotion
             string snow = "snow";
             if (pic_fea.IndexOf(snow) > -1)
             {
-                Poems.Text = "白雪却嫌春色晚，故穿庭树作飞花"; //包含指定的字符串，执行相应的代码
+                Poems.Text = "Snow,snow, White and cold. "; //包含指定的字符串，执行相应的代码
             }
 
             string moon = "moon";
