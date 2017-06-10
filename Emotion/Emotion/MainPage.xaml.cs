@@ -53,7 +53,18 @@ namespace Emotion
             string imageFilePath = ("d:\\1.jpg");
             this.InitializeComponent();
         }
-                //转流
+
+        private void buttonopen_Click(object sender, RoutedEventArgs e)
+        {
+            Colorpick.Visibility = Visibility;
+        }
+        private void Colorpick_ColorChanged(object sender, Windows.UI.Color color)
+        {
+            Border.Background = new SolidColorBrush(color);
+        }
+
+
+        //转流
         static byte[] GetImageAsByteArray(string imageFilePath)
         {
             FileStream fileStream = new FileStream(imageFilePath, FileMode.Open, FileAccess.Read);
@@ -120,7 +131,7 @@ namespace Emotion
             ////////////////////////////*/
         }
 
-
+       
 
         private async void AnalyzeButton_Click(object sender, RoutedEventArgs e)
         {
@@ -131,12 +142,12 @@ namespace Emotion
             var uri = new System.Uri(wangzhi);
             image.UriSource = uri;
             ImageToAnalyze.Source = image;
-
+            ImageToShow.Source = image;
             //显示分析结果
             string pic_fea = await MakeAnalysisRequest(wangzhi);
                 //await TextAnalysisRequest("i have a pen, you have an apple") + "\n\n ";
             string poem_key = TextAnalysisRequest("i have a pen, you have an apple") + "\n\n ";
-            ResultsTextBlock.Text = pic_fea + poem_key;
+            //ResultsTextBlock.Text = pic_fea + poem_key;
 
 
 
@@ -173,7 +184,7 @@ namespace Emotion
             StorageFolder folder = await applicationFolder.CreateFolderAsync("Pic", CreationCollisionOption.OpenIfExists);
             StorageFile saveFile = await folder.CreateFileAsync(desiredName, CreationCollisionOption.OpenIfExists);
             RenderTargetBitmap bitmap = new RenderTargetBitmap();
-            await bitmap.RenderAsync(PicGrid);
+            await bitmap.RenderAsync(show);
             var pixelBuffer = await bitmap.GetPixelsAsync();
             using (var fileStream = await saveFile.OpenAsync(FileAccessMode.ReadWrite))
             {
@@ -187,7 +198,7 @@ namespace Emotion
                      pixelBuffer.ToArray());
                 await encoder.FlushAsync();
             }
-            await new MessageDialog("已保存成功至C:\\Users\anuding\\AppData\\Local\\Packages\\2a0f1772-af4f-4ee4-a3e0-a9d62c687795_654wjja6gg34r\\LocalState\\Pic").ShowAsync();
+            await new MessageDialog("已保存成功至C:\\Users\\anuding\\AppData\\Local\\Packages\\2a0f1772-af4f-4ee4-a3e0-a9d62c687795_654wjja6gg34r\\LocalState\\Pic").ShowAsync();
             ////////////////////////////
 
         }

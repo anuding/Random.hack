@@ -130,6 +130,9 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Coding4Fun.Toolkit.Controls">
+      <Version>2.1.8</Version>
+    </PackageReference>
     <PackageReference Include="lindexi.uwp.src.ImageStorage">
       <Version>1.0.0</Version>
     </PackageReference>
