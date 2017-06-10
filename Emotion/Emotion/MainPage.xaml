@@ -9,31 +9,6 @@
     mc:Ignorable="d">
 
 
-    <!--
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" AutomationProperties.HelpText="">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="9*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-
-        <Grid x:Name="PicGrid" >
-            <Border BorderBrush="Black" BorderThickness="2" Margin="0,0,0,40">
-                <Image x:Name="ImageToAnalyze" />
-            </Border>
-            <TextBlock x:Name="Poems" Text="" Margin="150 200 20 0" TextWrapping="Wrap" Foreground="#FF030303" FontFamily="Microsoft YaHei UI Light" FontSize="22" />
-        </Grid>
-
-
-        <Button x:Name="AnalyzeButton" Content="Analyze" Click="AnalyzeButton_Click" HorizontalAlignment="Left" Margin="311,466,0,474" VerticalAlignment="Stretch" Grid.Column="1" d:LayoutOverrides="Height, TopPosition, BottomPosition"/>
-        <TextBox x:Name="Input" Height="32" Margin="0,466,-306,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" AutomationProperties.AutomationId="" AutomationProperties.HelpText="" HorizontalAlignment="Right" Width="704"/>
-
-
-    </Grid>-->
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
@@ -41,17 +16,35 @@
             <ColumnDefinition Width="6*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid x:Name="head" Grid.Column="0">
-            <!--第一列:放菜单,主页,捐赠,info-->
+        <Grid x:Name="head" Grid.Column="0" Background="#FFF3F3F5">
+            
+                <!--第一列:放菜单,主页,捐赠,info-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <!--在此处编辑控件-->
-            <Button x:Name="Homepage" Grid.Row="0" Content="homepage"/>
-            <Button x:Name="Donation" Grid.Row="1" Content="donation"/>
-            <Button x:Name="Info" Grid.Row="2" Content="info"/>
+            <Button x:Name="Homepage"  Grid.Row="0" Background="#FFF3F3F5" BorderThickness="0" HorizontalAlignment="Center">
+                <StackPanel>
+                    <Image Source="Assets/home.png" Height="62"/>
+                    <TextBlock Text="home" Foreground="Black" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="Donation" Grid.Row="1"  Background="#FFF3F3F5" BorderThickness="0" HorizontalAlignment="Center">
+                <StackPanel>
+                    <Image Source="Assets/donate.png" Height="62"/>
+                    <TextBlock Text="Donate" Foreground="Black" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            
+            <Button x:Name="Info" Grid.Row="2"  Background="#FFF3F3F5" BorderThickness="0" HorizontalAlignment="Center">
+                <StackPanel>
+                    <Image Source="Assets/info.png" Height="62"/>
+                    <TextBlock Text="info" Foreground="Black" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Button>
         </Grid>
 
         <Grid x:Name="middle" Grid.Column="1">
@@ -64,32 +57,35 @@
                 <RowDefinition Height="3*"/>
             </Grid.RowDefinitions>
             <!--在此处编辑控件-->
-            <Grid x:Name="ads" Grid.Column="0">
-
+            <Grid x:Name="ad2" Grid.Column="0">
+                <Image x:Name="ad1" Source="Assets/ads.png"  />
             </Grid>
             
             <Grid x:Name="PicGrid" Margin="10" Grid.Row="1" >
                 <Border BorderBrush="Black" BorderThickness="2" Margin="10" >
                     <Image x:Name="ImageToAnalyze" Margin="8" />
                 </Border>
-                <!--<TextBlock x:Name="Poems" Text="" TextWrapping="Wrap" Foreground="#FF030303" FontFamily="Microsoft YaHei UI Light" FontSize="22" Margin="98,77,192,76" />
-            -->
-             </Grid>
+            </Grid>
             
             <Grid x:Name="url"  Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="10*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <TextBox x:Name="Input" Grid.Column="0"/>
-                <Button x:Name="AnalyzeButton" Grid.Column="1"   Content="Analyze" Click="AnalyzeButton_Click" />
+                <TextBox x:Name="Input" Grid.Column="0" Height="32"  Width="780" Margin="20" HorizontalAlignment="Left"/>
+                <Button x:Name="AnalyzeButton" Grid.Column="1"  Background="White" BorderThickness="0"  Click="AnalyzeButton_Click" HorizontalAlignment="Center">
+                    <StackPanel>
+                        <Image Source="Assets/analyze.png" Height="30"/>
+                        <TextBlock Text="Analyze" Foreground="Black" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
             </Grid>
 
             <Grid x:Name="show" Margin="10" Grid.Row="3" >
                 <Border BorderBrush="Black" BorderThickness="2" Margin="10" >
                     <Image x:Name="ImageToShow" Margin="8" />
                 </Border>
-                <TextBlock x:Name="Poems" Text="" TextWrapping="Wrap" Foreground="#FF030303" FontFamily="Microsoft YaHei UI Light" FontSize="22" Margin="98,77,192,76" />
+                <TextBlock x:Name="Poems" HorizontalAlignment="Center" VerticalAlignment="Center" Text="" TextWrapping="Wrap" Foreground="#FF030303" FontFamily="Microsoft YaHei UI Light" FontSize="22"  />
             </Grid>
 
             <Grid x:Name="functions" Grid.Row="4">
@@ -98,26 +94,42 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button x:Name="Set_wallpaper" Grid.Column="0" Content="set as wallpaper"/>
-                <Button x:Name="Save" Grid.Column="1" Content="save"/>
-                <Button x:Name="Share" Grid.Column="2" Content="share"/>
+                <Button x:Name="Set_wallpaper" Click="SetButton_Click" Grid.Column="0" Background="White" BorderThickness="0" HorizontalAlignment="Center">
+                    <StackPanel>
+                        <Image Source="Assets/wallpaper.png" Height="62"/>
+                        <TextBlock Text="set as wallpaper" Foreground="Black" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="Save" Grid.Column="1" Click="SaveButton_Click" Background="White" BorderThickness="0" HorizontalAlignment="Center">
+                    <StackPanel>
+                        <Image Source="Assets/save.png" Height="62"/>
+                        <TextBlock Text="save" Foreground="Black" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                
+                <Button x:Name="Share" Grid.Column="2" Background="White" BorderThickness="0" HorizontalAlignment="Center">
+                    <StackPanel>
+                        <Image Source="Assets/share.png" Height="62"/>
+                        <TextBlock Text="share" Foreground="Black" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+                
             </Grid>
         </Grid>
 
-        <Grid x:Name="edit_area" Grid.Column="2">
+        <Grid x:Name="edit_area" Grid.Column="2" Background="#FFF3F3F5">
             <!--第三列:放编辑控件-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="2*"/>
+                <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
             
-            <!--在此处编辑控件-->
-            <ComboBox Width="120" Grid.Row="0"/>
-            <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Grid.Row="1">
-                <Button x:Name="buttonopen" Content="Open Color Picker" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-5.01,1.529" ToolTipService.ToolTip="Open color Picker for changing Background" Click="buttonopen_Click" />
-                <Border x:Name="Border" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="213" Margin="10,113,0,0" VerticalAlignment="Top" Width="269" />
-                <Controls:ColorPicker x:Name="Colorpick" HorizontalAlignment="Left" Height="358" Margin="284,113,0,0" VerticalAlignment="Top" Width="374" ColorChanged="Colorpick_ColorChanged" Visibility="Collapsed" />
-            </Grid>
+           <!-- 在此处编辑控件  -->
+           <ComboBox Name="MyComboBox" Grid.Row="0" Width="340"  Height="30" DisplayMemberPath="FontFamilyValue" PlaceholderText="Select a Font" Margin="10,25,0,0" SelectionChanged="MyComboBox_SelectionChanged"/>
+           <Controls:ColorPicker x:Name="Colorpick1" Grid.Row="1" HorizontalAlignment="Left" Height="358" Margin="10,113,0,0" VerticalAlignment="Top" Width="374"  ColorChanged="Colorpick_ColorChanged" Visibility="Visible" />
+  
+           <!-- <Controls:ColorPicker />-->
         </Grid>
     </Grid>
 </Page>

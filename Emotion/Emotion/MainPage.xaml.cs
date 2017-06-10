@@ -27,6 +27,8 @@ using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using Windows.Graphics.Display;
 using System.Net;
+using Coding4Fun;
+using Windows.System.UserProfile;
 //using System.Data.SQLite;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
@@ -36,32 +38,72 @@ namespace Emotion
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
+    public class FontClass
+        {
+            public FontFamily MyFontFamily { get; set; }
+            public string FontFamilyValue { get; set; }
+
+        }
     public sealed partial class MainPage : Page
     {
         //readonly string _subscriptionKey;
-        /*void connectToDatabase()
-        {
-            m_dbConnection = new SQLiteConnection("D:\\Random.hack\\Random.hack\\Emotion\\Emotion\\Assets");
-            m_dbConnection.Open();
-        }*/
-
+         List<FontClass> MyFontPicker;
         public MainPage()
         {
-
-          //这是干嘛的我忘了(⊙——⊙)
-
             string imageFilePath = ("d:\\1.jpg");
-            this.InitializeComponent();
+            //this.InitializeComponent();          
+            
+                this.InitializeComponent();
+                MyFontPicker = new List<FontClass>();
+                MyFontPicker.Add(new FontClass() { MyFontFamily = new FontFamily("Snap ITC"), FontFamilyValue = "Snap ITC" });
+                MyFontPicker.Add(new FontClass() { MyFontFamily = new FontFamily("Verdana"), FontFamilyValue = "Verdana" });
+                MyFontPicker.Add(new FontClass() { MyFontFamily = new FontFamily("Segoe WP Black"), FontFamilyValue = "Segoe WP Black" });
+                MyComboBox.ItemsSource = MyFontPicker;
+      
         }
-
-        private void buttonopen_Click(object sender, RoutedEventArgs e)
-        {
-            Colorpick.Visibility = Visibility;
-        }
+        private void MyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            {
+                FontClass MyFont = (FontClass)MyComboBox.SelectedItem;
+               Poems.FontFamily = MyFont.MyFontFamily;
+            }
+       
         private void Colorpick_ColorChanged(object sender, Windows.UI.Color color)
         {
-            Border.Background = new SolidColorBrush(color);
+          
+            Poems.Foreground= new SolidColorBrush(color);
         }
+
+        /// <summary>
+        /// 设置为壁纸
+        /// </summary>
+        private async void SetButton_Click(object sender, RoutedEventArgs e)
+        {
+           
+                //bool success = false;//string localAppDataFileName
+                string desiredName = DateTime.Now.Ticks + ".jpg";
+                StorageFolder applicationFolder = ApplicationData.Current.LocalFolder;
+                StorageFolder folder = await applicationFolder.CreateFolderAsync("Pic", CreationCollisionOption.OpenIfExists);
+                StorageFile saveFile = await folder.CreateFileAsync(desiredName, CreationCollisionOption.OpenIfExists);
+                RenderTargetBitmap bitmap = new RenderTargetBitmap();
+                await bitmap.RenderAsync(show);
+                var pixelBuffer = await bitmap.GetPixelsAsync();
+                using (var fileStream = await saveFile.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                    encoder.SetPixelData(BitmapPixelFormat.Bgra8,
+                        BitmapAlphaMode.Ignore,
+                         (uint)bitmap.PixelWidth,
+                         (uint)bitmap.PixelHeight,
+                         DisplayInformation.GetForCurrentView().LogicalDpi,
+                         DisplayInformation.GetForCurrentView().LogicalDpi,
+                         pixelBuffer.ToArray());
+                    await encoder.FlushAsync();
+                }
+                 await Windows.System.UserProfile.UserProfilePersonalizationSettings.Current.TrySetWallpaperImageAsync(saveFile);
+                await new MessageDialog("set as wallpaper successfully").ShowAsync();
+            
+        }
+
 
 
         //转流
@@ -130,9 +172,33 @@ namespace Emotion
             }
             ////////////////////////////*/
         }
+        
 
-       
-
+        /// 保存图片
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
+        {
+            string desiredName = DateTime.Now.Ticks + ".jpg";
+            StorageFolder applicationFolder = ApplicationData.Current.LocalFolder;
+            StorageFolder folder = await applicationFolder.CreateFolderAsync("Pic", CreationCollisionOption.OpenIfExists);
+            StorageFile saveFile = await folder.CreateFileAsync(desiredName, CreationCollisionOption.OpenIfExists);
+            RenderTargetBitmap bitmap = new RenderTargetBitmap();
+            await bitmap.RenderAsync(show);
+            var pixelBuffer = await bitmap.GetPixelsAsync();
+            using (var fileStream = await saveFile.OpenAsync(FileAccessMode.ReadWrite))
+            {
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                encoder.SetPixelData(BitmapPixelFormat.Bgra8,
+                    BitmapAlphaMode.Ignore,
+                     (uint)bitmap.PixelWidth,
+                     (uint)bitmap.PixelHeight,
+                     DisplayInformation.GetForCurrentView().LogicalDpi,
+                     DisplayInformation.GetForCurrentView().LogicalDpi,
+                     pixelBuffer.ToArray());
+                await encoder.FlushAsync();
+            }
+            await new MessageDialog("已保存成功至C:\\Users\\anuding\\AppData\\Local\\Packages\\2a0f1772-af4f-4ee4-a3e0-a9d62c687795_654wjja6gg34r\\LocalState\\Pic").ShowAsync();
+            ////////////////////////////
+        }
         private async void AnalyzeButton_Click(object sender, RoutedEventArgs e)
         {
             //读取输入网址
@@ -179,27 +245,7 @@ namespace Emotion
             //Poems.Text = "两岸青山相对出，孤帆一片日边来";
             //////////////////////////////////
             //以下是抄来的截图保存代码
-            string desiredName = DateTime.Now.Ticks + ".jpg";
-            StorageFolder applicationFolder = ApplicationData.Current.LocalFolder;
-            StorageFolder folder = await applicationFolder.CreateFolderAsync("Pic", CreationCollisionOption.OpenIfExists);
-            StorageFile saveFile = await folder.CreateFileAsync(desiredName, CreationCollisionOption.OpenIfExists);
-            RenderTargetBitmap bitmap = new RenderTargetBitmap();
-            await bitmap.RenderAsync(show);
-            var pixelBuffer = await bitmap.GetPixelsAsync();
-            using (var fileStream = await saveFile.OpenAsync(FileAccessMode.ReadWrite))
-            {
-                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
-                encoder.SetPixelData(BitmapPixelFormat.Bgra8,
-                    BitmapAlphaMode.Ignore,
-                     (uint)bitmap.PixelWidth,
-                     (uint)bitmap.PixelHeight,
-                     DisplayInformation.GetForCurrentView().LogicalDpi,
-                     DisplayInformation.GetForCurrentView().LogicalDpi,
-                     pixelBuffer.ToArray());
-                await encoder.FlushAsync();
-            }
-            await new MessageDialog("已保存成功至C:\\Users\\anuding\\AppData\\Local\\Packages\\2a0f1772-af4f-4ee4-a3e0-a9d62c687795_654wjja6gg34r\\LocalState\\Pic").ShowAsync();
-            ////////////////////////////
+           
 
         }
 

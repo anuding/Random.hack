@@ -110,6 +110,15 @@
     <None Include="Emotion_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\1.png" />
+    <Content Include="Assets\ads.png" />
+    <Content Include="Assets\analyze.png" />
+    <Content Include="Assets\donate.png" />
+    <Content Include="Assets\home.png" />
+    <Content Include="Assets\info.png" />
+    <Content Include="Assets\save.png" />
+    <Content Include="Assets\share.png" />
+    <Content Include="Assets\wallpaper.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
