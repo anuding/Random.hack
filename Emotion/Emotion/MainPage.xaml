@@ -25,21 +25,21 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <!--在此处编辑控件-->
-            <Button x:Name="Homepage"  Grid.Row="0" Background="#FFF3F3F5" BorderThickness="0" HorizontalAlignment="Center">
+            <Button x:Name="Homepage" Click="HomeButton_Click" Grid.Row="0" Background="#FFF3F3F5" BorderThickness="0" HorizontalAlignment="Center">
                 <StackPanel>
                     <Image Source="Assets/home.png" Height="62"/>
                     <TextBlock Text="home" Foreground="Black" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Button>
 
-            <Button x:Name="Donation" Grid.Row="1"  Background="#FFF3F3F5" BorderThickness="0" HorizontalAlignment="Center">
+            <Button x:Name="Donation" Grid.Row="1" Click="DonateButton_Click" Background="#FFF3F3F5" BorderThickness="0" HorizontalAlignment="Center">
                 <StackPanel>
                     <Image Source="Assets/donate.png" Height="62"/>
                     <TextBlock Text="Donate" Foreground="Black" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Button>
             
-            <Button x:Name="Info" Grid.Row="2"  Background="#FFF3F3F5" BorderThickness="0" HorizontalAlignment="Center">
+            <Button x:Name="Info" Grid.Row="2" Click="InfoButton_Click" Background="#FFF3F3F5" BorderThickness="0" HorizontalAlignment="Center">
                 <StackPanel>
                     <Image Source="Assets/info.png" Height="62"/>
                     <TextBlock Text="info" Foreground="Black" HorizontalAlignment="Center"/>
@@ -81,11 +81,13 @@
                 </Button>
             </Grid>
 
-            <Grid x:Name="show" Margin="10" Grid.Row="3" >
+            <Grid x:Name="showGrid" Margin="10" Grid.Row="3" >
+                
                 <Border BorderBrush="Black" BorderThickness="2" Margin="10" >
-                    <Image x:Name="ImageToShow" Margin="8" />
-                </Border>
+                   <Grid x:Name="show"> <Image x:Name="ImageToShow" Margin="8" />
+                
                 <TextBlock x:Name="Poems" HorizontalAlignment="Center" VerticalAlignment="Center" Text="" TextWrapping="Wrap" Foreground="#FF030303" FontFamily="Microsoft YaHei UI Light" FontSize="22"  />
+                </Grid></Border>
             </Grid>
 
             <Grid x:Name="functions" Grid.Row="4">
@@ -107,8 +109,8 @@
                         <TextBlock Text="save" Foreground="Black" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-                
-                <Button x:Name="Share" Grid.Column="2" Background="White" BorderThickness="0" HorizontalAlignment="Center">
+
+                <Button x:Name="Share" Grid.Column="2" Click="InvokeShareContractButton_Click" Background="White" BorderThickness="0" HorizontalAlignment="Center">
                     <StackPanel>
                         <Image Source="Assets/share.png" Height="62"/>
                         <TextBlock Text="share" Foreground="Black" HorizontalAlignment="Center"/>
@@ -122,14 +124,15 @@
             <!--第三列:放编辑控件-->
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
+                <!--<RowDefinition Height="4*"/>-->
                 <RowDefinition Height="4*"/>
             </Grid.RowDefinitions>
             
            <!-- 在此处编辑控件  -->
            <ComboBox Name="MyComboBox" Grid.Row="0" Width="340"  Height="30" DisplayMemberPath="FontFamilyValue" PlaceholderText="Select a Font" Margin="10,25,0,0" SelectionChanged="MyComboBox_SelectionChanged"/>
-           <Controls:ColorPicker x:Name="Colorpick1" Grid.Row="1" HorizontalAlignment="Left" Height="358" Margin="10,113,0,0" VerticalAlignment="Top" Width="374"  ColorChanged="Colorpick_ColorChanged" Visibility="Visible" />
-  
-           <!-- <Controls:ColorPicker />-->
+          <Controls:ColorPicker x:Name="Colorpick1" Grid.Row="1" HorizontalAlignment="Left" Height="358" Margin="10,113,0,0" VerticalAlignment="Top" Width="374"  ColorChanged="Colorpick_ColorChanged" Visibility="Visible" />
+            <!--<TextBox x:Name="ResultsTextBlock" Grid.Row="2" Width="340"  Height="300" Text="dwq"></TextBox>
+             <Controls:ColorPicker />-->
         </Grid>
     </Grid>
 </Page>

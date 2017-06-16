@@ -112,6 +112,7 @@
   <ItemGroup>
     <Content Include="Assets\1.png" />
     <Content Include="Assets\ads.png" />
+    <Content Include="Assets\Alipay.png" />
     <Content Include="Assets\analyze.png" />
     <Content Include="Assets\donate.png" />
     <Content Include="Assets\home.png" />

@@ -29,6 +29,8 @@ using Windows.Graphics.Display;
 using System.Net;
 using Coding4Fun;
 using Windows.System.UserProfile;
+using Windows.ApplicationModel;
+
 //using System.Data.SQLite;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
@@ -57,10 +59,91 @@ namespace Emotion
                 MyFontPicker = new List<FontClass>();
                 MyFontPicker.Add(new FontClass() { MyFontFamily = new FontFamily("Snap ITC"), FontFamilyValue = "Snap ITC" });
                 MyFontPicker.Add(new FontClass() { MyFontFamily = new FontFamily("Verdana"), FontFamilyValue = "Verdana" });
-                MyFontPicker.Add(new FontClass() { MyFontFamily = new FontFamily("Segoe WP Black"), FontFamilyValue = "Segoe WP Black" });
-                MyComboBox.ItemsSource = MyFontPicker;
-      
+                MyFontPicker.Add(new FontClass() { MyFontFamily = new FontFamily("Freestyle Script"), FontFamilyValue = "Freestyle Script" });
+            MyFontPicker.Add(new FontClass() { MyFontFamily = new FontFamily("Consolas"), FontFamilyValue = "Consolas" });
+            MyFontPicker.Add(new FontClass() { MyFontFamily = new FontFamily("Bauhaus 93"), FontFamilyValue = "Bauhaus 93" });
+            MyFontPicker.Add(new FontClass() { MyFontFamily = new FontFamily("Comic Sans MS"), FontFamilyValue = "Comic Sans MS" });
+            MyFontPicker.Add(new FontClass() { MyFontFamily = new FontFamily("French Script MT"), FontFamilyValue = "French Script MT" });
+            MyFontPicker.Add(new FontClass() { MyFontFamily = new FontFamily("Star Avenue"), FontFamilyValue = "Star Avenue" });
+            MyComboBox.ItemsSource = MyFontPicker;
+
+            RegisterForShare();
+
         }
+
+        private void RegisterForShare()
+        {
+            DataTransferManager dataTransferManager = DataTransferManager.GetForCurrentView();
+            dataTransferManager.DataRequested += new TypedEventHandler<DataTransferManager, DataRequestedEventArgs>(this.ShareImageHandler);
+        }
+
+        private async void ShareImageHandler(DataTransferManager sender, DataRequestedEventArgs e)
+        {
+            /*string wangzhi = Input.Text;
+            //显示图片
+            var image1 = new BitmapImage();
+            var uri = new System.Uri(wangzhi);
+            image1.UriSource = uri;*/
+            DataRequest request = e.Request;
+            request.Data.Properties.Title = "Share your picture";
+            request.Data.Properties.Description = "with Emotion.";
+
+            // Handle errors
+            //request.FailWithDisplayText("Something unexpected could happen.");
+
+            // Plain text
+            request.Data.SetText("Hello world!");
+            //request.Data.SetBitmap(image1);
+
+            // Uniform Resource Identifiers (URIs)
+            //request.Data.SetWebLink(new Uri("https://msdn.microsoft.com"));
+
+            // HTML
+            request.Data.SetHtmlFormat("<b>Bold Text</b>");
+
+            // Because we are making async calls in the DataRequested event handler,
+            //  we need to get the deferral first.
+            DataRequestDeferral deferral = request.GetDeferral();
+            string desiredName = DateTime.Now.Ticks + ".jpg";
+            StorageFolder applicationFolder = ApplicationData.Current.LocalFolder;
+            StorageFolder folder = await applicationFolder.CreateFolderAsync("Pic", CreationCollisionOption.OpenIfExists);
+            StorageFile saveFile = await folder.CreateFileAsync(desiredName, CreationCollisionOption.OpenIfExists);
+            RenderTargetBitmap bitmap = new RenderTargetBitmap();
+            await bitmap.RenderAsync(show);
+            var pixelBuffer = await bitmap.GetPixelsAsync();
+            using (var fileStream = await saveFile.OpenAsync(FileAccessMode.ReadWrite))
+            {
+                var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.PngEncoderId, fileStream);
+                encoder.SetPixelData(BitmapPixelFormat.Bgra8,
+                    BitmapAlphaMode.Ignore,
+                     (uint)bitmap.PixelWidth,
+                     (uint)bitmap.PixelHeight,
+                     DisplayInformation.GetForCurrentView().LogicalDpi,
+                     DisplayInformation.GetForCurrentView().LogicalDpi,
+                     pixelBuffer.ToArray());
+                await encoder.FlushAsync();
+            }
+            // Make sure we always call Complete on the deferral.
+            try
+            {
+                StorageFile thumbnailFile = await Package.Current.InstalledLocation.GetFileAsync("Assets\\LockScreenLogo.scale-200.png");
+                request.Data.Properties.Thumbnail = RandomAccessStreamReference.CreateFromFile(thumbnailFile);
+                StorageFile imageFile = await Package.Current.InstalledLocation.GetFileAsync("Assets\\StoreLogo.png");
+
+                // Bitmaps
+                request.Data.SetBitmap(RandomAccessStreamReference.CreateFromFile(saveFile));
+            }
+            finally
+            {
+                deferral.Complete();
+            }
+        }
+
+        private void InvokeShareContractButton_Click(object sender, RoutedEventArgs e)
+        {
+            DataTransferManager.ShowShareUI();
+        }
+
         private void MyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
             {
                 FontClass MyFont = (FontClass)MyComboBox.SelectedItem;
@@ -76,6 +159,21 @@ namespace Emotion
         /// <summary>
         /// 设置为壁纸
         /// </summary>
+        /// 
+        
+        private async void HomeButton_Click(object sender, RoutedEventArgs e)
+        {
+            await new MessageDialog("haha,this button is fake").ShowAsync();
+        }
+        private async void InfoButton_Click(object sender, RoutedEventArgs e)
+        {
+            await new MessageDialog("made by:Claire,Dio,Elena,Frank,Lorenzo").ShowAsync();
+        }
+        private async void DonateButton_Click(object sender, RoutedEventArgs e)
+        {
+            await new MessageDialog("please wait for my AliPay QR code...").ShowAsync();
+           
+        }
         private async void SetButton_Click(object sender, RoutedEventArgs e)
         {
            
@@ -213,7 +311,7 @@ namespace Emotion
             string pic_fea = await MakeAnalysisRequest(wangzhi);
                 //await TextAnalysisRequest("i have a pen, you have an apple") + "\n\n ";
             string poem_key = TextAnalysisRequest("i have a pen, you have an apple") + "\n\n ";
-            //ResultsTextBlock.Text = pic_fea + poem_key;
+            //ResultsTextBlock.Text = pic_fea;
 
 
 
